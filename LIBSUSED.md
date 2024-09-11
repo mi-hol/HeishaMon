@@ -3,7 +3,7 @@
 
 **Note:** 
 
-This is just a user friendly display of commands used in build action https://github.com/Egyras/HeishaMon/blob/master/.github/workflows/main.yml
+This is just a user friendly display of commands used in step "name: Install dependencies" inside build action https://github.com/Egyras/HeishaMon/blob/master/.github/workflows/main.yml
 
 Only actual code in build action is relevant!
 
