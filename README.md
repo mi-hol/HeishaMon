@@ -15,16 +15,16 @@ Suomen kielellä [README_FI.md](README_FI.md) luettavissa täällä.
 Latest release is available [here](https://github.com/Egyras/HeishaMon/releases). 
 The ESP8266 compiled binary can be installed on a Wemos D1 mini, on the HeishaMon PCB and generally on any ESP8266 based board compatible with Wemos build settings (at least 4MB flash). 
 The ESP32-S3 binary is for the newer, large, version of HeishaMon.
-You can also download the code and compile it yourself (see required libraries [here](). The ESP32-S3 binary is for the newer, large, version of HeishaMon.
+You can also download the code and compile it yourself (see required libraries [here](LIBSUSED.md).
 
 
 # Using the software
 HeishaMon is able to communicate with the Panasonic Aquarea H, J, K and L&series. [Confirmed by users types of HP you can find here](HeatPumpType.md) \
 If you want to compile this image yourself be sure to use the mentioned libraries and support for a filesystem on the esp8266 so select the correct flash option in arduino ide for that.
 
-When starting, without a configured wifi, an open-wifi-hotspot will be visible allowing you to configure your wifi network and your MQTT server. Configuration page will be located at http://192.168.4.1 . \
+When starting, without a configured wifi, an open-wifi-hotspot will be visible allowing you to configure your wifi network and your MQTT server. Configuration page will be located at http://192.168.4.1 . 
 
-After configuring and booting the image will be able to read and talk to your heatpump. The GPIO13/GPIO15 connection will be used for communications so you can keep your computer/uploader connected to the board if you want. \
+After configuring and booting the image will be able to read and talk to your heatpump. The GPIO13/GPIO15 connection will be used for communications so you can keep your computer/uploader connected to the board if you want. 
 Serial 1 (GPIO2) can be used to connect another serial line (GND and TX from the board only) to read some debugging data.
 
 All received data will be sent to different MQTT topics (see below for topic descriptions). There is also a 'panasonic_heat_pump/log' MQTT topic which provides debug logging and a hexdump of the received packets (if enabled in the web portal).
