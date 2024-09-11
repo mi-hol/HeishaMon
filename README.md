@@ -12,7 +12,10 @@ Suomen kielellä [README_FI.md](README_FI.md) luettavissa täällä.
 *Help on translation to other languages is welcome.*
 
 # Current releases
-Latest release is available [here](https://github.com/Egyras/HeishaMon/releases). The ESP8266 compiled binary can be installed on a Wemos D1 mini, on the HeishaMon PCB and generally on any ESP8266 based board compatible with Wemos build settings (at least 4MB flash). You can also download the code and compile it yourself (see required libraries below). The ESP32-S3 binary is for the newer, large, version of heishamon.
+Latest release is available [here](https://github.com/Egyras/HeishaMon/releases). 
+The ESP8266 compiled binary can be installed on a Wemos D1 mini, on the HeishaMon PCB and generally on any ESP8266 based board compatible with Wemos build settings (at least 4MB flash). 
+The ESP32-S3 binary is for the newer, large, version of HeishaMon.
+You can also download the code and compile it yourself (see required libraries [here](). The ESP32-S3 binary is for the newer, large, version of HeishaMon.
 
 
 # Using the software
@@ -28,11 +31,11 @@ All received data will be sent to different MQTT topics (see below for topic des
 
 You can connect a 1wire network on GPIO4 which will report in seperate MQTT topics (panasonic_heat_pump/1wire/sensorid).
 
-The software is also able to measure Watt on a S0 port of two kWh meters. You only need to connect GPIO12 and GND to the S0 of one kWh meter and if you need a second kWh meter use GPIO14 and GND. It will report on MQTT topic panasonic_heat_pump/s0/Watt/1 and panasonic_heat_pump/s0/Watt/2 and also in the JSON output. You can replace 'Watt' in the previous topic with 'Watthour' to get consumption counter in WattHour (per mqtt message) or to 'WatthourTotal' to get the total consumption measured in WattHour. To sync the WatthourTotal with your kWh-meter, publish the correct value to MQTT to the panasonic_heat_pump/s0/WatthourTotal/1 or panasonic_heat_pump/s0/WatthourTotal/2 topic with the 'retain' option while heishamon is rebooting. Upon reboot, heishamon reads this value as the last known value to you can sync using this method.
+The software is also able to measure Watt on a S0 port of two kWh meters. You only need to connect GPIO12 and GND to the S0 of one kWh meter and if you need a second kWh meter use GPIO14 and GND. It will report on MQTT topic panasonic_heat_pump/s0/Watt/1 and panasonic_heat_pump/s0/Watt/2 and also in the JSON output. You can replace 'Watt' in the previous topic with 'Watthour' to get consumption counter in WattHour (per mqtt message) or to 'WatthourTotal' to get the total consumption measured in WattHour. To sync the WatthourTotal with your kWh-meter, publish the correct value to MQTT to the panasonic_heat_pump/s0/WatthourTotal/1 or panasonic_heat_pump/s0/WatthourTotal/2 topic with the 'retain' option while HeishaMon is rebooting. Upon reboot, HeishaMon reads this value as the last known value to you can sync using this method.
 
 Updating the firmware is as easy as going to the firmware menu and, after authentication with username 'admin' and password 'heisha' (or other provided during setup), uploading the binary there.
 
-A json output of all received data (heatpump and 1wire) is available at the url http://heishamon.local/json (replace heishamon.local with the ip address of your heishamon device if MDNS is not working for you).
+A json output of all received data (heatpump and 1wire) is available at the url http://HeishaMon.local/json (replace HeishaMon.local with the ip address of your HeishaMon device if MDNS is not working for you).
 
 Within the 'integrations' folder you can find examples how to connect your automation platform to the HeishaMon.
 
@@ -289,7 +292,7 @@ HeishaMon will receive power from the Panasonic over the cable (5v power).
 ## Long distance connection
 It it possible to connect the HeishaMon over a long distance. Up to 5 meter is working with normal cabling. For longer distances a TTL-to-RS485 configuration as show in the picture below is possible. The however requires HeishaMon to be powered externally using 5v power (for example from an USB cable).
 
-![TTL-over-RS485 HeishaMon long distance](optional-long-distance-heishamon.png)
+![TTL-over-RS485 HeishaMon long distance](optional-long-distance-HeishaMon.png)
 
 
 ## Where to get connectors
@@ -323,10 +326,10 @@ All the [libs we use](LIBSUSED.md) necessary for compiling.
 The software also supports ds18b20 1-wire temperature sensors reading. A proper 1-wire configuration (with 4.7kohm pull-up resistor) connected to GPIO4 will be read each configured secs (minimal 5) and send at the panasonic_heat_pump/1wire/"sensor-hex-address" topic. On the pre-made boards this 4.7kohm resistor is already installed.
 
 ## Large board relay control
-The newer, large, heishamon contains two onboard relays which can be switched on and off using MQTT commands. The relays can be used for any contact switching, even 230V mains (max 5A). For example to switch the 230V contacts in the heatpump for controlling the 'external thermostat', switching a pump on or off or other lower power devices. I do not recommend to use the relay as a switch for a electric heater as they use too much power. To control the relay just send a value of 1 or 0 to the MQTT topic "panasonic_heat_pump/gpio/relay/one" for relay one or "panasonic_heat_pump/gpio/relay/two" for relay two.
+The newer, large, HeishaMon contains two onboard relays which can be switched on and off using MQTT commands. The relays can be used for any contact switching, even 230V mains (max 5A). For example to switch the 230V contacts in the heatpump for controlling the 'external thermostat', switching a pump on or off or other lower power devices. I do not recommend to use the relay as a switch for a electric heater as they use too much power. To control the relay just send a value of 1 or 0 to the MQTT topic "panasonic_heat_pump/gpio/relay/one" for relay one or "panasonic_heat_pump/gpio/relay/two" for relay two.
 
 ## Opentherm support
-If your heishamon board supports opentherm the software can also be used to bridge opentherm information from a compatible thermostat to your home automation over MQTT or JSON and as mentioned above it can also be connected directly in the rules to connect opentherm information to the heatpump and back, for example to display the outside temperature from the heatpump on your opentherm thermostat. If you enable opentherm support in settings there will be a new tab visible in the web page. On that tab you will see opentherm values. Some are of type R(ead) and some are W(rite), and some are both. Read means that the thermostat can read that information from the heishamon. You provide that information over MQTT (or using the rules) by updating this value on the mqtt 'opentherm/read' topic, for example 'panasonic_heat_pump/opentherm/read/outsideTemp'. The write values are information from the thermostat, like 'roomTemp'. These are available on mqtt topic 'opentherm/write'. You can use these values to change the heatpump behaviour in anyway you want using your home automation and mqtt set-commands to heishamon on using the internal rules.
+If your HeishaMon board supports opentherm the software can also be used to bridge opentherm information from a compatible thermostat to your home automation over MQTT or JSON and as mentioned above it can also be connected directly in the rules to connect opentherm information to the heatpump and back, for example to display the outside temperature from the heatpump on your opentherm thermostat. If you enable opentherm support in settings there will be a new tab visible in the web page. On that tab you will see opentherm values. Some are of type R(ead) and some are W(rite), and some are both. Read means that the thermostat can read that information from the HeishaMon. You provide that information over MQTT (or using the rules) by updating this value on the mqtt 'opentherm/read' topic, for example 'panasonic_heat_pump/opentherm/read/outsideTemp'. The write values are information from the thermostat, like 'roomTemp'. These are available on mqtt topic 'opentherm/write'. You can use these values to change the heatpump behaviour in anyway you want using your home automation and mqtt set-commands to HeishaMon on using the internal rules.
 
 The available opentherm variables are: 
 ### WRITE values
@@ -339,23 +342,23 @@ The available opentherm variables are:
 - maxRelativeModulation is the amount of modulation (0-100%) the heatpump (opentherm slave) is allowed to use (see relativeModulation in READ values, which should always be equal or lower than this max)
 - coolingControl is the amount of cooling (0-100%) the thermostat requests from the heatpump. Requires an opentherm thermostat with cooling support.
 ### READ AND WRITE values
-- dhwSetpoint is the floating point value which is the current DHW setpoint by thermostat, but can also be set by heishamon to override it. Not all thermostat support this though. It should not be set higher than dhwSetUppBound, see below.
-- maxTSet is the floating point value which defines the maximum water setpoint. The user can set this on the thermostat or can also set from heishamon. It should not be set higher than chSetUppBound, see below.
+- dhwSetpoint is the floating point value which is the current DHW setpoint by thermostat, but can also be set by HeishaMon to override it. Not all thermostat support this though. It should not be set higher than dhwSetUppBound, see below.
+- maxTSet is the floating point value which defines the maximum water setpoint. The user can set this on the thermostat or can also set from HeishaMon. It should not be set higher than chSetUppBound, see below.
 ### READ values
-- chPressure is the floating point value which defines measured water pressure of central heating provided by heishamon
-- outsideTemp is the floating point value which defines measured outside temperature of central heating provided by heishamon
-- inletTemp is the floating point value which defines measured water inlet temperature of central heating provided by heishamon
-- outletTemp is the floating point value which defines measured water outlet temperature of central heating provided by heishamon
-- dhwTemp is the floating point value which defines measured dhw temperature of central heating provided by heishamon
+- chPressure is the floating point value which defines measured water pressure of central heating provided by HeishaMon
+- outsideTemp is the floating point value which defines measured outside temperature of central heating provided by HeishaMon
+- inletTemp is the floating point value which defines measured water inlet temperature of central heating provided by HeishaMon
+- outletTemp is the floating point value which defines measured water outlet temperature of central heating provided by HeishaMon
+- dhwTemp is the floating point value which defines measured dhw temperature of central heating provided by HeishaMon
 - relativeModulation is the amount (0-100%) of modulation the heatpump (opentherm slave) is currently running on, should always be lower or equal than the maxRelativeModulation set by the thermostat
 - flameState is a boolean value (send 'true', 'on' or '1' to enable) which defines if the central heating is providing heat central
 - chState is a boolean value (send 'true', 'on' or '1' to enable) which defines if the heatpump is on room/central heating mode (for example 3-way valve on room, in heating mode)
 - dhwState is a boolean value (send 'true', 'on' or '1' to enable) which defines if the heatpump is on DHW mode (for example 3-way valve on dhw)
 - coolingState is a boolean value (send 'true', 'on' or '1' to enable) which defines if the heatpump is on room/central cooling mode (for example 3-way valve on room, in cooling mode)
-- dhwSetUppBound is a integer value from 0 to 127 which sets the max DHW temperature supported so the thermostat can not request a dhwSetpoint higher than this. Default is set to 75. To override, send a MQTT message to this topic and make it retained so heishamon receives it again after reboot.
-- dhwSetLowBound is a integer value from 0 to 127 which sets the min DHW temperature supported so the thermostat can not request a dhwSetpoint lower than this. Default is set to 40. To override, send a MQTT message to this topic and make it retained so heishamon receives it again after reboot.
-- chSetUppBound is a integer value from 0 to 127 which sets the max CH (heating water) temperature supported so the thermostat can not request a chSetpoint higher than this. Default is set to 65. To override, send a MQTT message to this topic and make it retained so heishamon receives it again after reboot.
-- chSetLowBound is a integer value from 0 to 127 which sets the min CH (heating water) temperature supported so the thermostat can not request a chSetpoint lower than this. Default is set to 20. To override, send a MQTT message to this topic and make it retained so heishamon receives it again after reboot.
+- dhwSetUppBound is a integer value from 0 to 127 which sets the max DHW temperature supported so the thermostat can not request a dhwSetpoint higher than this. Default is set to 75. To override, send a MQTT message to this topic and make it retained so HeishaMon receives it again after reboot.
+- dhwSetLowBound is a integer value from 0 to 127 which sets the min DHW temperature supported so the thermostat can not request a dhwSetpoint lower than this. Default is set to 40. To override, send a MQTT message to this topic and make it retained so HeishaMon receives it again after reboot.
+- chSetUppBound is a integer value from 0 to 127 which sets the max CH (heating water) temperature supported so the thermostat can not request a chSetpoint higher than this. Default is set to 65. To override, send a MQTT message to this topic and make it retained so HeishaMon receives it again after reboot.
+- chSetLowBound is a integer value from 0 to 127 which sets the min CH (heating water) temperature supported so the thermostat can not request a chSetpoint lower than this. Default is set to 20. To override, send a MQTT message to this topic and make it retained so HeishaMon receives it again after reboot.
 
 ## Protocol byte decrypt info:
 [Current list of documented bytes decrypted can be found here](ProtocolByteDecrypt.md)
